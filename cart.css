@@ -23,4 +23,9 @@
 
 html #dCartWrapper{
     overflow: hidden;
+    /* display: none; */
+}
+
+#dCartWrapper .cart-container{
+    display: none;
 }
