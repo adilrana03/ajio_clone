@@ -11,7 +11,7 @@ document.getElementById("btnPayment").addEventListener("click", () => {
 
     ) {
         // alert("hi");
-        window.location.href = "./summaryPage.html";
+        window.location.href = "summaryPage.html";
     }
 });
 document.getElementById("bagt").innerHTML = `Rs ${totalAmt.total_bag.toFixed(
