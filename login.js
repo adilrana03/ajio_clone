@@ -73,10 +73,11 @@ function display_login_modal(){
 
     function checkUser(obj,password1){
         console.log("check")
-        if(obj.password===password1){
+        if(obj.password==password1){
             localStorage.setItem("signin",obj.id)
             document.querySelector('#sign-in').innerHTML=null
             document.querySelector(".login-modal").innerHTML = obj.email
+            window.location.reload()
         }else{
             alert('Incorrect Password')
         }
@@ -99,8 +100,16 @@ function display_login_modal(){
             body: JSON.stringify(obj),
             redirect: 'follow'
             })
-        localStorage.setItem("signin",data.id)
-        document.querySelector('#sign-in').innerHTML=null
+            document.querySelector('#sign-in').innerHTML=null
+            data.then((res)=>{
+                return res.json()
+            }).then((res)=>{
+                document.querySelector(".login-modal").innerHTML = res.email
+                localStorage.setItem("signin",res.id)
+
+                window.location.reload()
+        })
+        // console.log(data)
     }
     async function getUser(email){
         let data = await fetch(`https://ajio-json.onrender.com/users?email=${email}`)

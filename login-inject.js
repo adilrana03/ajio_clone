@@ -9,3 +9,12 @@ function displayModal(){
         document.querySelector('#sign-in').innerHTML=null
     })
 }
+let sign_id = localStorage.getItem('signin')
+if(sign_id){
+    let data = fetch(`https://ajio-json.onrender.com/users/${sign_id}`)
+    data.then((res)=>{
+        return res.json()
+    }).then((res)=>{
+        document.querySelector(".login-modal").innerHTML = res.email
+    })
+}

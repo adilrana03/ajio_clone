@@ -1,51 +1,16 @@
 let sign_id = localStorage.getItem('signin')
 // fetch_cart()
+let array = []
 async function fetch_cart(){
     let data = await fetch(`https://ajio-json.onrender.com/users/${sign_id}`)
     data = await data.json()
     if(data.cart.length){
-        display_cart(data.cart)
+        array = data.cart
+        display_cart(array)
     }
 }
-let arr = [
-    {
-      "id": 36,
-      "image": "https://assets.ajio.com/medias/sys_master/root/20220705/WzMY/62c35ba3f997dd03e2b98ad0/-1117Wx1400H-464586925-blue-MODEL.jpg",
-      "img1": "https://assets.ajio.com/medias/sys_master/root/20220705/4uiI/62c35ba3f997dd03e2b98b2c/-1117Wx1400H-464586925-blue-MODEL3.jpg",
-      "img2": "https://assets.ajio.com/medias/sys_master/root/20220705/P2lP/62c35ba3f997dd03e2b98af2/-473Wx593H-464586925-blue-MODEL6.jpg",
-      "name": "GLAM ROOTS",
-      "des": "Floral Anarkali Kurta",
-      "price": 800,
-      "type": "dress",
-      "Gender": "F",
-      "qty" : 1
-    },
-    {
-      "id": 2,
-      "image": "https://assets.ajio.com/medias/sys_master/root/20221123/zUpf/637d4106aeb269659ca84d63/-1117Wx1400H-465324816-tan-MODEL.jpg",
-      "img1": "https://assets.ajio.com/medias/sys_master/root/20221123/Cw0h/637d410daeb269659ca84e42/-1117Wx1400H-465324816-tan-MODEL5.jpg",
-      "img2": "https://assets.ajio.com/medias/sys_master/root/20221123/2u5R/637d4106aeb269659ca84d9d/-1117Wx1400H-465324816-tan-MODEL3.jpg",
-      "name": "CAMPUS SUTRA",
-      "des": "Zip-Front Bomber Jacket",
-      "price": 700,
-      "type": "jacket",
-      "Gender": "M",
-      "qty" : 1
-    },
-    {
-      "id": 3,
-      "image": "https://assets.ajio.com/medias/sys_master/root/20220323/RjiR/623acfbaaeb26921afec7a51/-1117Wx1400H-462745234-blue-MODEL.jpg",
-      "img1": "https://assets.ajio.com/medias/sys_master/root/20220323/hxiq/623acfbbaeb26921afec7a8e/-1117Wx1400H-462745234-blue-MODEL4.jpg",
-      "img2": "https://assets.ajio.com/medias/sys_master/root/20220323/O3qt/623acfbbaeb26921afec7a87/-1117Wx1400H-462745234-blue-MODEL5.jpg",
-      "name": "KIANA HOUSE OF FASHION",
-      "des": "Floral Print Round Neck Gown Dress",
-      "price": 450,
-      "type": "dress",
-      "Gender": "F",
-      "qty" : 1
-    }]
-
-display_cart(arr)
+// display_cart(arr)
+fetch_cart()
 function display_cart(arr){
     document.querySelector('#item').innerHTML = `(${arr.length} items)`
     document.querySelector('.empty-cart').style.display = "none"
@@ -70,11 +35,6 @@ function display_cart(arr){
                     </div>
                 </div>
                 <div class="update-wrapper">
-                    <div class="cartsize">
-                        <span>Size</span>
-                        <div>S<span class="ic-chevrondown"></span>
-                        </div>
-                    </div>
                     <div class="cartqty">
                         <span>Qty</span>
                         <div>${e.qty}<span class="ic-chevrondown"></span>
@@ -93,8 +53,9 @@ function display_cart(arr){
     main_div.append(data)
     })
     display_price(arr)
+    addFunctionalities()
 }
-
+localStorage.removeItem('ajio_price_discount')
 function display_price(arr){
     let total = arr.reduce((ac,e)=>{
         return ac + e.price*e.qty
@@ -123,5 +84,137 @@ function checkCoupon(){
         document.querySelector('.content').innerHTML = "Invalid Coupon"
         let price = document.querySelectorAll('.price-value')
         price[2].innerHTML = "₹ " + (+localStorage.getItem('ajio_price')).toFixed(2)
+        localStorage.removeItem('ajio_price_discount')
     }
 }
+
+function addFunctionalities(){
+    let change = document.querySelectorAll('.update-wrapper') || []
+    change = [...change]
+    // console.log(change)
+    change.map((e,i)=>{
+        e.addEventListener('click',()=>{
+            changeQty(i)
+        })
+    })
+    let delete_btn = document.querySelectorAll('.delete-btn') || []
+    delete_btn = [...delete_btn]
+    delete_btn.map((e,i)=>{
+        e.addEventListener('click',()=>{
+            deleteItem(i)
+        })
+    })
+
+}
+
+function changeQty(index){
+    // console.log('working',index)
+    let div = document.createElement('div')
+    div.setAttribute('class','modal fade in cart-qty-update-modal')
+    div.setAttribute('id','modalId')
+    div.style.display = 'block'
+    div.innerHTML = `<div class="modal-dialog"><div class="modal-content"><div class="ic-close-quickview"></div><div><div id="cardSizePopup"><div id="cardQtyPopup"><div class="cartqty-section"><p class="header-label">Select quantity</p><button class="decrement button" disabled=""> - </button><div class="counter"> 1 </div><button class="increment button"> + </button></div><button class="full-width-button" id="updateQuantity">Update</button></div></div></div></div>`
+    document.querySelector('#dCartWrapper').append(div)
+
+    document.querySelector('.counter').innerHTML = array[index].qty
+    if(array[index].qty==1){
+        document.querySelector('.decrement').disabled = true
+    }else{
+        document.querySelector('.decrement').disabled = false
+    }
+    if(array[index].qty==10){
+        document.querySelector('.increment').disabled = true
+    }else{
+        document.querySelector('.increment').disabled = false
+    }
+    document.querySelector('.decrement').addEventListener('click',()=>{
+        array[index].qty--
+        document.querySelector('.counter').innerHTML = array[index].qty
+        if(array[index].qty==1){
+            document.querySelector('.decrement').disabled = true
+        }else{
+            document.querySelector('.decrement').disabled = false
+        }
+        if(array[index].qty==10){
+            document.querySelector('.increment').disabled = true
+        }else{
+            document.querySelector('.increment').disabled = false
+        }
+    })
+    document.querySelector('.increment').addEventListener('click',()=>{
+        array[index].qty++
+        document.querySelector('.counter').innerHTML = array[index].qty
+        if(array[index].qty==1){
+            document.querySelector('.decrement').disabled = true
+        }else{
+            document.querySelector('.decrement').disabled = false
+        }
+        if(array[index].qty==10){
+            document.querySelector('.increment').disabled = true
+        }else{
+            document.querySelector('.increment').disabled = false
+        }
+    })
+    document.querySelector('#updateQuantity').addEventListener('click',()=>{
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            cart : array
+        });
+
+        var requestOptions = {
+            method: 'PATCH',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+        fetch(`https://ajio-json.onrender.com/users/${sign_id}`, requestOptions)
+        .then((res)=>{return res.json()})
+        .then((res)=>{array = res.cart
+            display_cart(array)
+            console.log(array)
+            div.parentNode.removeChild(div)
+        })
+        .catch(error => console.log('error', error));
+    })
+
+    document.querySelector('.ic-close-quickview').addEventListener('click',()=>{
+        console.log("hi");
+        div.parentNode.removeChild(div)
+    })
+}
+
+function deleteItem(index) {
+    array.splice(index,1)
+    var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            cart : array
+        });
+
+        var requestOptions = {
+            method: 'PATCH',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+        fetch(`https://ajio-json.onrender.com/users/${sign_id}`, requestOptions)
+        .then((res)=>{return res.json()})
+        .then((res)=>{array = res.cart
+            if(!array.length){
+                window.location.reload()
+            }
+            display_cart(array)
+            console.log(array)
+            div.parentNode.removeChild(div)
+        })
+        .catch(error => console.log('error', error));
+}
+/*</div> */
+
+document.querySelector('.shipping-button').addEventListener('click',()=>{
+    localStorage.setItem('final_cart',JSON.stringify(array))
+    window.location.href = "./shipping.html"
+})
