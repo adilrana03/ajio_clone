@@ -27,7 +27,7 @@ function navbar() {
                 <p>Customer Care</p>
             </div>
             <div id="navbar_signin_btn">
-                <p>Sign In / Join AJIO</p>
+                <p><a id="user-info" href="../signup.html"></a></p>
             </div>
         </div>
         <div>
@@ -218,4 +218,19 @@ function navbar() {
 </div>`
 }
 
-export default navbar;
+
+
+async function search(){
+    console.log("Search btn working");
+    var input=document.getElementById("search_box").value.toLowerCase();
+    let url="https://ajio-json.onrender.com/search/";
+    let data=await fetch(url);
+    data=await data.json();
+    if(data[input]){
+        window.location.href=data[input]
+    }else{
+        alert("product not found");
+    }
+}
+
+export  {navbar, search};

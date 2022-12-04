@@ -46,6 +46,10 @@
             display: flex;
             width: 100%;
         }
+        #four{
+            display: flex;
+            width: 100%;
+        }
         #grid{
             display: grid;
             grid-template-columns: repeat(3,1fr);
@@ -62,16 +66,44 @@
         }
 
         @media (max-width: 800px) {
+            #full{
+                width:80%
+            }
             #half {
-                width: 98%;
+                width: 90%;
             }
             #quarter {
-                width: 49%;
+                width: 45%;
             }
             #third {
-                width: 100%;
+                width: 27%;
             }
+            #four{
+                width: 20%;
+            }
+            #main,#main-b,#main-c,#main-d,#main-e{
+                width: 80%;
+            }
+            #grid{
+            display: grid;
+            width: 80%;
+            grid-template-columns: repeat(2,1fr);
+            grid-template-rows: repeat(6,1fr);
         }
+
+        }
+
+        /* @media (max-width: 1200px) {
+            #half {
+                width: 90%;
+            }
+            #quarter {
+                width: 45%;
+            }
+            #third {
+                width: 22%;
+            }
+        } */
     </style>
 </head>
 
@@ -205,7 +237,7 @@
                     <img src="https://assets.ajio.com/cms/AJIO/WEB/header-JIT.jpg" alt="">
                 </div>
 
-                <div id="quarter">
+                <div id="four">
                     <img src="https://assets.ajio.com/cms/AJIO/WEB/29112022-D-MHP-JITstatic-p1-louisphilippe-min40.jpg">
                     <img src="https://assets.ajio.com/cms/AJIO/WEB/29112022-D-MHP-JITstatic-p2-brands-min40.jpg">
                     <img src="https://assets.ajio.com/cms/AJIO/WEB/29112022-D-MHP-JITstatic-p3-brands-min40.jpg">
@@ -306,12 +338,6 @@
                 <div id="full">
                     <img src="https://assets.ajio.com/cms/AJIO/WEB/08032022-D-unisex-ajiocares-strip.jpg" alt="">
                 </div>
-
-
-
-
-
-
         </div>
 
         <div>
@@ -330,12 +356,15 @@
     }
 </script>
 <script type="module">
-    import navbar from "./components/navbar.js";
+    import {navbar,search} from "./components/navbar.js";
     let navbar_division = document.getElementById("navbar_division");
     navbar_division.innerHTML = navbar();
     import footer from "./components/footer.js";
     let footer_division = document.getElementById("footer_division");
     footer_division.innerHTML = footer();
+    var user=document.getElementById("user-info");
+    user.innerHTML=localStorage.getItem("user") || "SignUp / Login";
+
 
 var image = 0;
 print(image);
@@ -446,8 +475,23 @@ function print5(image5) {
 }
 
 
-</script>
+// async function search1(){
+//     console.log("Search btn working");
+//     var input=document.getElementById("search_box").value.toLowerCase();
+//     let url="https://ajio-json.onrender.com/search/";
+//     let data=await fetch(url);
+//     data=await data.json();
+//     if(data[input]){
+//         window.location.href=data[input]
+//     }else{
+//         alert("product not found");
+//     }
+// }
 
+document.querySelector(".material-icons-outlined").addEventListener("click",search);
+
+
+</script>
 <link rel="stylesheet" href="./styles/navbar.css">
 <link rel="stylesheet" href="./styles/footer.css">
 <script src="./scripts/navbar.js"></script>

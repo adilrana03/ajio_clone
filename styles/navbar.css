@@ -403,6 +403,10 @@
 .itm_nme {
     font-size:13px;
 }
+a{
+    text-decoration: none;
+    color: black;
+}
 @media (max-width: 1290px) {
     .searchiconvisi{
         display: none;
