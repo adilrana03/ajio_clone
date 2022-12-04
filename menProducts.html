@@ -21,7 +21,7 @@
         <!--sidebar started-->
         <div id="sidebar">
 
-            <h6>Home  /  D2c Fachion</h6>
+            <h6>Home    /        D2c Fachion</h6>
             <div id="first_box">
                 
                    <h3> Refine By <i class="fa-solid fa-angle-up" id="arrow"></i></h3> 
@@ -36,16 +36,16 @@
                 </div>
                 <hr>
                 <div>
-                    <p><i class="fa-solid fa-minus"></i>Category</p>
+                    <p id="category"><i class="fa-solid fa-minus"></i>Category</p>
                 </div>
                 
                 <div id="input">
                     <p>
-                        <input type="checkbox"> Ethentics</p>
-                    <p> <input type="checkbox"> T-shirts</p>
-                    <p> <input type="checkbox"> Jackets</p>
-                    <p> <input type="checkbox"> Winterwears</p>
-                    <p> <input type="checkbox"> Shirts</p>
+                        <input type="checkbox" id="tshirts" oninput="tshirts()"> T-shirts</p>
+                    <p> <input type="checkbox" id="shirts" oninput="shirts()"> Shirts</p>
+                
+                    <p> <input type="checkbox" id="ethentics" oninput="ethentics()"> Ethentics</p>
+                    <p> <input type="checkbox" id="winterwears" oninput="winterwears()"> Winterwears</p>
                 </div>
                 <p class="more">MORE</p>
                 <hr>
@@ -96,12 +96,12 @@
                 <p>Clothing</p>
                  <hr id="hr">
                  <div >
-                   <p>100 Items Found</p>
+                   <p id="span">100 Items Found</p>
                    <div >
-                    <p>SORT BY</p><select name="" id="">
-                        <option value="">Relevance</option>
+                    <p>SORT BY</p><select name="" id="sort" oninput="sort()" >
+                        <option value="All">Relevance</option>
                         <option value="htl">Price(highest first)</option>
-                        <option value="lth">Price(lowest first</option>
+                        <option value="lth">Price(lowest first)</option>
                     </select>
                    </div>
                   
